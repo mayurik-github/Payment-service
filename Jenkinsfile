@@ -8,7 +8,9 @@ pipeline {
     environment {
         DOCKER_USER = 'mayurikulkarni2024' 
         IMAGE_NAME = 'payment-ms'
-        APP_SERVER = '18.144.67.160'
+        KUBE_CONFIG = "/home/ubuntu/.kube/config"
+        AWS_REGION = "us-west-1"
+        EKS_CLUSTER_NAME = "payment-cluster"
     }
 
     stages {
@@ -40,5 +42,31 @@ pipeline {
                 }
             }
         }
+        
+        stage('Deploy to EKS') {
+	    	steps {
+		        script {
+		            withCredentials([[
+		                $class: 'AmazonWebServicesCredentialsBinding',
+		                credentialsId: 'aws-creds',  // Jenkins credential ID for AWS keys
+		                accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+		                secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
+		            ]]) {
+		            	env.PATH = "/usr/local/bin:$PATH"
+		                sh '''
+		                    # Configure kubectl for EKS
+		                    aws eks update-kubeconfig \
+		                      --region ${AWS_REGION} \
+		                      --name ${EKS_CLUSTER_NAME}
+		
+		                    # Apply manifests
+		                    kubectl apply -f k8s-manifests/configmap.yaml
+		                    kubectl apply -f k8s-manifests/deployment.yaml
+		                    kubectl apply -f k8s-manifests/service.yaml
+		                '''
+		            }
+	        	}
+	    	}
+	    }
     }
 }

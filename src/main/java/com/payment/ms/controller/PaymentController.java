@@ -1,5 +1,7 @@
 package com.payment.ms.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -25,9 +27,12 @@ public class PaymentController {
 
 	@Autowired
 	private KafkaTemplate<String, OrderEvent> kafkaOrderTemplate;
+	
+	private Logger logger = LoggerFactory.getLogger(PaymentController.class);
 
 	@KafkaListener(topics = "new-orders", groupId = "orders-group")
 	public void processPayment(String event) throws JsonMappingException, JsonProcessingException {
+		logger.debug("Process payment for event {}", event);
 		System.out.println("Recieved event for payment " + event);
 		OrderEvent orderEvent = new ObjectMapper().readValue(event, OrderEvent.class);
 
@@ -45,6 +50,7 @@ public class PaymentController {
 			paymentEvent.setOrder(orderEvent.getOrder());
 			paymentEvent.setType("PAYMENT_CREATED");
 			kafkaTemplate.send("new-payments", paymentEvent);
+			logger.info("Payment sent for order {} ", orderEvent.getOrder().getOrderId());
 		} catch (Exception e) {
 			payment.setOrderId(order.getOrderId());
 			payment.setStatus("FAILED");

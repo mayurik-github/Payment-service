@@ -1,11 +1,14 @@
 package com.payment.ms.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.payment.ms.controller.PaymentController;
 import com.payment.ms.dto.CustomerOrder;
 import com.payment.ms.dto.OrderEvent;
 import com.payment.ms.dto.PaymentEvent;
@@ -20,6 +23,8 @@ public class ReversePayment {
 
 	@Autowired
 	private KafkaTemplate<String, OrderEvent> kafkaTemplate;
+	
+	private Logger logger = LoggerFactory.getLogger(ReversePayment.class);
 
 	@KafkaListener(topics = "reversed-payments", groupId = "payments-group")
 	public void reversePayment(String event) {
@@ -40,6 +45,7 @@ public class ReversePayment {
 			OrderEvent orderEvent = new OrderEvent();
 			orderEvent.setOrder(paymentEvent.getOrder());
 			orderEvent.setType("ORDER_REVERSED");
+			logger.info("Reversing payment for order {} ", paymentEvent.getOrder().getOrderId());
 			kafkaTemplate.send("reversed-orders", orderEvent);
 		} catch (Exception e) {
 			e.printStackTrace();
