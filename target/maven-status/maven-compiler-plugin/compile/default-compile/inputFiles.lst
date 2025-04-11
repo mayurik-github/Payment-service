@@ -1,9 +1,0 @@
-/Users/mayurikulkarni/synergisticit-code/Interview prep/distributed-transaction-main/payment-ms/src/main/java/com/payment/ms/entity/Payment.java
-/Users/mayurikulkarni/synergisticit-code/Interview prep/distributed-transaction-main/payment-ms/src/main/java/com/payment/ms/dto/OrderEvent.java
-/Users/mayurikulkarni/synergisticit-code/Interview prep/distributed-transaction-main/payment-ms/src/main/java/com/payment/ms/entity/PaymentRepository.java
-/Users/mayurikulkarni/synergisticit-code/Interview prep/distributed-transaction-main/payment-ms/src/main/java/com/payment/ms/dto/PaymentEvent.java
-/Users/mayurikulkarni/synergisticit-code/Interview prep/distributed-transaction-main/payment-ms/src/main/java/com/payment/ms/dto/CustomerOrder.java
-/Users/mayurikulkarni/synergisticit-code/Interview prep/distributed-transaction-main/payment-ms/src/main/java/com/payment/ms/PaymentMsApplication.java
-/Users/mayurikulkarni/synergisticit-code/Interview prep/distributed-transaction-main/payment-ms/src/main/java/com/payment/ms/dto/Stock.java
-/Users/mayurikulkarni/synergisticit-code/Interview prep/distributed-transaction-main/payment-ms/src/main/java/com/payment/ms/controller/PaymentController.java
-/Users/mayurikulkarni/synergisticit-code/Interview prep/distributed-transaction-main/payment-ms/src/main/java/com/payment/ms/service/ReversePayment.java
