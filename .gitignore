@@ -3,6 +3,12 @@
 *.log
 logs/
 
+
+.classpath
+.project
+.settings/
+.DS_Store
+
 target/
 !.mvn/wrapper/maven-wrapper.jar
 .mvn/wrapper/maven-wrapper.properties
